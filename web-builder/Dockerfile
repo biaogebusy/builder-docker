@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # 阶段 2：运行应用
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
