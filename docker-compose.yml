@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - web-builder
+      - ai-service
+      - php
+    networks:
+      - webnet
+
+  web-builder:
+    build:
+      context: ./web-builder
+    ports:
+      - '4200:4200'
+    networks:
+      - webnet
+
+  ai-service:
+    build:
+      context: ./ai-service
+    ports:
+      - '3000:3000'
+    networks:
+      - webnet
+
+  php:
+    image: wodby/php:8.1
+    volumes:
+      - ./drupal:/var/www/html
+    networks:
+      - webnet
+
+  mariadb:
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - webnet
+
+  redis:
+    image: redis:alpine
+    networks:
+      - webnet
+
+volumes:
+  db_data:
+
+networks:
+  webnet:
