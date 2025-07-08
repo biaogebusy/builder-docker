@@ -8,6 +8,7 @@ services:
       - '443:443'
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - nginx_cache:/var/cache/nginx
     depends_on:
       - web-builder
       - php
@@ -31,7 +32,7 @@ services:
       - webnet
 
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:10.6
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: drupal

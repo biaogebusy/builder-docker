@@ -15,9 +15,8 @@ git clone git@github.com:biaogebusy/builder-cms.git drupal
 ```
 
 ## 3. 克隆 web builder
-
+克隆或者下载web builder，把文件夹里面的文件复制到web-builder目录下
 ```base
-cd web-builder
 git clone git@github.com:biaogebusy/web-builder.git
 ```
 
