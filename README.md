@@ -20,6 +20,29 @@ git clone git@github.com:biaogebusy/web-builder.git
 ```
 
 ## 4. web builder目录下创建 Dockerfile
+把web-builder里面的文件复制到项目的web-builder目录下，打开配置文件：`/src/environments/environment.prod.ts`，并配置你的api地址（你的前台访问地址），例如：
+```ts
+export const environment: IEnvironment = {
+  apiUrl: 'https://base.builder.design',
+  production: true,
+  port: 4200,
+  cache: true,
+  multiLang: true,
+  langs: [
+    {
+      label: '中文',
+      langCode: 'zh-hans',
+      prefix: '/',
+      default: true,
+    },
+    {
+      label: 'EN',
+      langCode: 'en',
+      prefix: '/en',
+    },
+  ],
+};
+```
 
 ``` base 
 # 阶段 1：构建应用
@@ -40,8 +63,6 @@ WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
-
-RUN npm install --only=production
 
 EXPOSE 4200
 
