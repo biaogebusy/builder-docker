@@ -1,65 +1,28 @@
 services:
-  nginx:
-    image: nginx:alpine
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/nginx_cache:/var/cache/nginx
-    depends_on:
-      - web-builder
-      - php
-    networks:
-      - webnet
-
-  web-builder:
-    build:
-      context: ./web-builder
-    networks:
-      - webnet
-
   php:
-    image: wodby/php:8.1
-    ports:
-      - '9001:9000'
-    working_dir: /var/www/html/docroot
+    image: wodby/drupal-php:8.1
+    container_name: wodby-php-8.1
+    environment:
+      PHP_EXTENSIONS_DISABLE: xhprof,spx
+      PHP_MAIL_MIXED_LF_AND_CRLF: 'On'
     volumes:
       - ./drupal:/var/www/html
+  nginx:
+    image: wodby/nginx:1.29
+    container_name: wodby-nginx
+    depends_on:
+      - php
     environment:
-      PHP_FPM_LISTEN: 0.0.0.0:9000
-      # 优化 PHP-FPM 配置
-      PHP_FPM_PM: dynamic
-      PHP_FPM_PM_MAX_CHILDREN: 50
-      PHP_FPM_PM_START_SERVERS: 5
-      PHP_FPM_PM_MIN_SPARE_SERVERS: 5
-      PHP_FPM_PM_MAX_SPARE_SERVERS: 10
-      PHP_FPM_PM_MAX_REQUESTS: 500
-      # 启用 OPcache
-      PHP_OPCACHE_ENABLE: '1'
-      PHP_OPCACHE_MEMORY_CONSUMPTION: '128'
-    networks:
-      - webnet
-
-  mariadb:
-    image: mariadb:10.6
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: drupal
-      MYSQL_USER: drupal
-      MYSQL_PASSWORD: drupal
+      NGINX_STATIC_OPEN_FILE_CACHE: 'off'
+      NGINX_ERROR_LOG_LEVEL: debug
+      NGINX_BACKEND_HOST: php
+      NGINX_SERVER_ROOT: /var/www/html/docroot
+      NGINX_VHOST_PRESET: drupal9
     volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - webnet
-
-  redis:
-    image: redis:alpine
-    networks:
-      - webnet
-
-volumes:
-  db_data:
-
+      - ./drupal:/var/www/html
+    ports:
+      - '4080:80'
 networks:
-  webnet:
+  default:
+    external: true
+    name: 1panel-network
