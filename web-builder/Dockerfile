@@ -1,6 +1,4 @@
-# 阶段 1：构建应用
 FROM node:22-alpine AS builder
-
 WORKDIR /app
 
 COPY package*.json ./
