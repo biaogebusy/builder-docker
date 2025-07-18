@@ -187,4 +187,4 @@ export const environment: IEnvironment = {
 ## 绑定前后台域名
 
 - 绑定后台域名到后台端口（省略）
-- [绑定前端域名到前端端口](?path=/docs/部署-常规部署-builder-前台部署--docs#四配置反向代理)
+- [绑定前端域名到前端端口](https://docs.builder.design/?path=/docs/%E9%83%A8%E7%BD%B2-%E5%B8%B8%E8%A7%84%E9%83%A8%E7%BD%B2-builder-%E5%89%8D%E5%8F%B0%E9%83%A8%E7%BD%B2--docs)
