@@ -80,13 +80,7 @@ DB_DRIVER=mysql
 SITE_PASSWORD=8DvyifP9vUSv9%7L
 ```
 
-## 1. 克隆或者下载 builder docker 项目
-
-```bash
-git clone git@github.com:biaogebusy/builder-docker.git
-```
-
-## 2. 克隆 Builder cms 仓库
+## 1. 克隆 Builder cms 仓库
 
 在项目根目录下克隆最新的 builder cms 为 drupal
 
