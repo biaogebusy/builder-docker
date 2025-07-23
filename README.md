@@ -85,7 +85,7 @@ SITE_PASSWORD=8DvyifP9vUSv9%7L
 在项目根目录下克隆最新的 builder cms 为 drupal
 
 ```bash
-git clone git@github.com:biaogebusy/builder-cms.git drupal
+git clone git@github.com:biaogebusy/builder-cms.git builder-cms
 ```
 
 修改`./init.d/services.yml`中`allowedOrigins`为你的前台域名。
