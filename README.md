@@ -76,17 +76,18 @@ DB_HOST=mariadb
 DB_PORT=3306
 DB_DRIVER=mysql
 
-### site
+### Drupal root password
 SITE_PASSWORD=8DvyifP9vUSv9%7L
 ```
 
-## 1. 克隆 Builder cms 仓库
-
-在项目根目录下克隆最新的 builder cms 为 drupal
+## 1. 克隆后端 Builder cms 和前端 Web builder 都根目录
 
 ```bash
-git clone git@github.com:biaogebusy/builder-cms.git builder-cms
+git clone git@github.com:biaogebusy/builder-cms.git
+git clone git@github.com:biaogebusy/web-builder.git
 ```
+
+## 3. 修改后端 API 跨域配置
 
 修改`./init.d/services.yml`中`allowedOrigins`为你的前台域名。
 
@@ -115,15 +116,9 @@ cors.config:
   supportsCredentials: true
 ```
 
-## 3. 克隆 web builder
+## 4. 修改前台域名
 
-```base
-git clone git@github.com:biaogebusy/web-builder.git
-```
-
-## 4. 绑定前台域名
-
-打开 web builder 目录下：`/src/environments/environment.prod.ts`，修改环境变量 apiUrl 为你的前台域名，例如：
+打开 web builder 目录下：`/src/environments/environment.prod.ts`，修改环境变量 apiUrl 为你的前台域名：
 
 ```ts
 export const environment: IEnvironment = {
@@ -150,7 +145,13 @@ export const environment: IEnvironment = {
 
 > 默认开启多语言
 
-## 5. 持续构建脚本
+## 5. 执行构建脚本
+
+确保`install.sh`有足够的权限
+
+```bash
+./install.sh
+```
 
 以上前后台搭建完成之后，在项目根目录下执行构建脚本，脚本自动执行以下流程：
 
@@ -173,10 +174,6 @@ export const environment: IEnvironment = {
 - 重置密码为环境变量中的自定义密码
 
 进入终端运行以下安装初始化命令
-
-```bash
-./install.sh
-```
 
 ## 绑定前后台域名
 

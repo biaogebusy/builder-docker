@@ -89,7 +89,7 @@ fi
 
 
 # 初始化drupal配置
-DRUUPAL_DIR="drupal/docroot/sites/default"
+DRUUPAL_DIR="builder-cms/docroot/sites/default"
  # 获取脚本绝对路径（更可靠的方式）
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
