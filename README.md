@@ -147,7 +147,7 @@ export const environment: IEnvironment = {
 
 ## 5. 执行构建脚本
 
-确保`install.sh`有足够的权限
+确保`install.sh`有可执行的权限
 
 ```bash
 ./install.sh
@@ -179,3 +179,25 @@ export const environment: IEnvironment = {
 
 - 绑定后台域名到后台端口（省略）
 - [绑定前端域名到前端端口](https://docs.builder.design/?path=/docs/%E9%83%A8%E7%BD%B2-%E5%B8%B8%E8%A7%84%E9%83%A8%E7%BD%B2-builder-%E5%89%8D%E5%8F%B0%E9%83%A8%E7%BD%B2--docs)
+
+## 镜像无法下载
+
+查看`docker info`
+通过返回的信息确认`Docker Root Dir`Docker 的目录，进入该目录查看是否存在`daemon.json`配置文件，没有则新建：
+
+```json
+{
+  "registry-mirrors": [
+    "https://docker.1panelproxy.com",
+    "https://docker.1ms.run",
+    "https://docker.1panel.live/",
+    "https://registry.docker-cn.com",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://mirror.aliyuncs.com",
+    "https://docker.m.daocloud.io"
+  ]
+}
+```
+
+- 重启 Docker：`sudo systemctl restart docker`
+- 再次 `docker info` 确认源已更新
