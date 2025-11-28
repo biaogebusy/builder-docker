@@ -168,7 +168,7 @@ parameters:
     # Configure requests allowed from specific origins.
     allowedOrigins: ['https://base.builder.design']
     # Sets the Access-Control-Expose-Headers header.
-    exposedHeaders: true
+    exposedHeaders: false
     # Sets the Access-Control-Max-Age header.
     maxAge: 1000
     # Sets the Access-Control-Allow-Credentials header.
