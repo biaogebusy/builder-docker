@@ -62,7 +62,7 @@ NODE_PORT=4200
 PROJECT_PORT=5080
 
 ### PHP
-PHP_TAG=8.1
+PHP_TAG=8.3
 
 ### nginx
 NGINX_TAG=1.29
@@ -122,24 +122,29 @@ cors.config:
 
 ```ts
 export const environment: IEnvironment = {
-  apiUrl: 'https://base.builder.design',
+  apiUrl: 'https://yourdomain.com',
   production: true,
   port: 4200,
-  cache: true,
   multiLang: true,
   langs: [
     {
       label: '中文',
       langCode: 'zh-hans',
-      prefix: '/',
       default: true,
     },
     {
       label: 'EN',
       langCode: 'en',
-      prefix: '/en',
     },
   ],
+  oauth: {
+    clientId: 'xxx',
+    tokenUrl: '/oauth/token',
+    authorizeUrl: '/oauth/authorize',
+    redirectPath: '/me/login/callback',
+    logoutPath: '/api/v3/session/logout',
+    scope: 'webmaster',
+  },
 };
 ```
 
@@ -164,14 +169,17 @@ export const environment: IEnvironment = {
 
 ### 第二阶段
 
-- 创建数据库，并导入`./init.d/durpal.sql`初始化的安装包
+- 创建数据库，并导入 `./init.d/drupal-base.gz` 初始化的安装包（gzip 压缩的 SQL 转储）
 - 初始化 Drupal 站点`drupal/docroot/sites/default`相关文件及文件夹创建
 - 创建 `files`文件夹并设置`777`权限
 - 复制 `./init.d/services.yml` 到 `drupal/docroot/sites/default`目录下
 - 复制 `drupal/docroot/sites/default/default.settings.php`为`settings.php`
 - 配置`hash_salt`和反向代理`reverse_proxy`
 - 配置数据库
+- 执行 `drush updb -y` 更新数据库结构，执行 `drush cr` 重建缓存
 - 重置密码为环境变量中的自定义密码
+
+> CMS 基线转储的来源和导出日期记录在 `./init.d/BASELINE.md`。
 
 进入终端运行以下安装初始化命令
 

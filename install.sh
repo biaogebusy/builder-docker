@@ -75,8 +75,8 @@ if docker inspect --format='{{.State.Status}}' "$DB_CONTAINER_NAME" >/dev/null 2
     container_status=$(docker inspect -f '{{.State.Status}}' "$DB_CONTAINER_NAME")
     if [ "$container_status" = "running" ]; then
         echo "容器正在运行"
-        # 导入数据库
-        docker exec -i $DB_CONTAINER_NAME mariadb --user=root --password=$DB_ROOT_PASSWORD --database=$DB_NAME < ./init.d/drupal.sql
+        # 导入数据库(gzip -dc 在 Linux/macOS 上通用)
+        gzip -dc ./init.d/drupal-base.gz | docker exec -i $DB_CONTAINER_NAME mariadb --user=root --password=$DB_ROOT_PASSWORD --database=$DB_NAME
         echo "成功导入数据库"
     else
         echo "容器创建成功但未运行 (状态: $container_status)"
@@ -138,6 +138,10 @@ EOF
 
 printf "\n%s\n" "$content" >> "$SETTING_FILE"
 echo "成功配置文件: $SETTING_FILE"
+
+# 转储可能滞后于代码:更新钩子追平数据库结构并重建缓存
+docker exec -it "${PROJECT_NAME}_php" drush updb -y
+docker exec -it "${PROJECT_NAME}_php" drush cr
 
 docker exec -it "${PROJECT_NAME}_php" drush upwd root "$SITE_PASSWORD"
 echo "登录密码: $SITE_PASSWORD"
